@@ -41,4 +41,4 @@ COPY php.ini /usr/local/etc/php/php.ini
 # Clean Images
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* 
 
-WORKDIR /var/www
+WORKDIR /var/www/app
