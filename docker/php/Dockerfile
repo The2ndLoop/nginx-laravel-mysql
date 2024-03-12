@@ -32,6 +32,7 @@ COPY php.local.ini /usr/local/etc/php/php.ini
 # Clean Images
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* 
 
+WORKDIR /var/www/app
 
 # If you would like to use some packages in stg, add them to here.
 FROM base AS stg 
