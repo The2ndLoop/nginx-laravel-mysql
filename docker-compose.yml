@@ -1,0 +1,54 @@
+version: "3"
+name: nginx-laravel-mysql # You should rename this.
+services:
+  nginx:
+    container_name: "nginx"
+    build:
+      context: ./docker/nginx
+    image: nginx-laravel-mysql_nginx # You should rename this.
+    depends_on:
+      - php
+    ports:
+      - 8080:80
+    volumes:
+      - ./docker/nginx/logs:/etc/nginx/logs
+    networks:
+      - nginx-laravel-mysql
+    restart: always
+
+  php:
+    container_name: "php"
+    build:
+      context: ./docker/php
+      target: ${ENV:-local}
+    image: nginx-laravel-mysql_php # You should rename this.
+    depends_on:
+      - mysql
+    volumes:
+      - ./src:/var/www/app
+    networks:
+      - nginx-laravel-mysql
+    restart: always
+
+  mysql:
+    container_name: "mysql"
+    build:
+      context: ./docker/mysql
+    image: nginx-laravel-mysql_mysql # You should rename this.
+    volumes:
+      - mysql-db-store:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=Password!
+      - MYSQL_DATABASE=laravel_db
+    ports:
+      - 13306:3306
+    networks:
+      - nginx-laravel-mysql
+
+volumes:
+  mysql-db-store:
+    name: mysql-db-store # You should rename this.
+
+networks:
+  nginx-laravel-mysql:
+    name: nginx-laravel-mysql # You should rename this.
